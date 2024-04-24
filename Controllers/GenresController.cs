@@ -1,5 +1,5 @@
-﻿using Basic.EF.Core.API.Data;
-using Basic.EF.Core.API.Models;
+﻿using Basic.Ef.Core.Data;
+using Basic.Ef.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

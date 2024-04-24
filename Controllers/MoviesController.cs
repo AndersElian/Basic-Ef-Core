@@ -1,5 +1,5 @@
-using Basic.EF.Core.API.Data;
-using Basic.EF.Core.API.Models;
+using Basic.Ef.Core.Data;
+using Basic.Ef.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,6 +43,8 @@ public class MoviesController : Controller
 
         return Ok(filteredMovies);
     }
+    
+    [HttpGet("by-genre/{genreId:int}")]
 
     [HttpPost]
     [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]

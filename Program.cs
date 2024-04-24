@@ -1,4 +1,4 @@
-using Basic.EF.Core.API.Data;
+using Basic.Ef.Core.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
