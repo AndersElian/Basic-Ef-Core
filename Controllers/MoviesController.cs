@@ -3,7 +3,7 @@ using Basic.Ef.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dometrain.EFCore.API.Controllers;
+namespace Basic.Ef.Core.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -20,7 +20,12 @@ public class MoviesController : Controller
     [ProducesResponseType(typeof(List<Movie>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _context.Movies.ToListAsync());
+        return Ok(
+            await _context.Movies
+                .Include(x => x.Director)
+                .Include(x => x.Genre)
+                .ToListAsync()
+        );
     }
 
     [HttpGet("{id:int}")]
@@ -28,7 +33,10 @@ public class MoviesController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get([FromRoute] int id)
     {
-        var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+        var movie = await _context.Movies
+            .Include(x => x.Director)
+            .Include(x => x.Genre)
+            .FirstOrDefaultAsync(m => m.Id == id);
         return movie == null ? NotFound() : Ok(movie);
     }
 
@@ -38,14 +46,13 @@ public class MoviesController : Controller
     {
         var filteredMovies = await _context.Movies
             .Where(m => m.ReleaseDate.Year == year)
-            .Select(movie => new MovieTitle { Id = movie.Id, Title = movie.Title})
+            .Select(movie => new MovieTitle { Id = movie.Id, Title = movie.Title })
             .ToListAsync();
 
         return Ok(filteredMovies);
     }
-    
-    [HttpGet("by-genre/{genreId:int}")]
 
+    [HttpGet("by-genre/{genreId:int}")]
     [HttpPost]
     [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]
     public async Task<IActionResult> Create([FromBody] Movie movie)
@@ -53,9 +60,9 @@ public class MoviesController : Controller
         await _context.AddAsync(movie);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(Get),new {id = movie.Id}, movie);
+        return CreatedAtAction(nameof(Get), new { id = movie.Id }, movie);
     }
-    
+
     [HttpPut("{id:int}")]
     [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,7 +70,7 @@ public class MoviesController : Controller
     {
         var existingMovie = await _context.Movies.FindAsync(id);
 
-        if(existingMovie is null)
+        if (existingMovie is null)
             return NotFound();
 
         existingMovie.Title = movie.Title;
@@ -74,7 +81,7 @@ public class MoviesController : Controller
 
         return Ok(existingMovie);
     }
-    
+
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -82,7 +89,7 @@ public class MoviesController : Controller
     {
         var existingMovie = await _context.Movies.FindAsync(id);
 
-        if (existingMovie is null) 
+        if (existingMovie is null)
             return NotFound();
 
         _context.Movies.Remove(existingMovie);

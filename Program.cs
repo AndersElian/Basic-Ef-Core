@@ -14,7 +14,7 @@ builder.Services.AddDbContext<MoviesContext>();
 
 var app = builder.Build();
 
-// Dirty Hack
+// To easily delete and recreate the database before getting ready to use migrations
 var scope = app.Services.CreateScope();
 var contextMovie = scope.ServiceProvider.GetRequiredService<MoviesContext>();
 contextMovie.Database.EnsureDeleted();

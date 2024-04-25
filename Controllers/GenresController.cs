@@ -3,7 +3,7 @@ using Basic.Ef.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dometrain.EFCore.API.Controllers;
+namespace Basic.Ef.Core.Controllers;
 
 [ApiController]
 [Route("[controller]")]

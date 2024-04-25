@@ -7,8 +7,8 @@ namespace Basic.Ef.Core.Data
     public class MoviesContext : DbContext
     {
         public DbSet<Movie> Movies => Set<Movie>();
-
         public DbSet<Genre> Genres => Set<Genre>();
+        public DbSet<Person> Persons => Set<Person>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

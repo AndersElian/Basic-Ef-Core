@@ -12,9 +12,10 @@ public class GenreMapping : IEntityTypeConfiguration<Genre>
         builder.HasKey(g => g.Id);
         builder.Property(g => g.Name);
 
-        // builder.HasMany(g => g.Movies)
-        //     .WithOne(m => m.Genre)
-        //     .HasForeignKey(m => m.Genre.Id)
-        //     .OnDelete(DeleteBehavior.Cascade);
+        builder.HasData(new Genre
+        {
+            Id = 1,
+            Name = "Action"
+        });
     }
 }
